@@ -38,6 +38,7 @@ pickScissors.addEventListener('click', function () {
 var gameState = 'notStarted'; //started // ended
 var possiblePicks = ['kamień', 'papier', 'nożyce'];
 var winnerName = ""; //*
+var roundWinnerIs ="" ; //*
 var player = {
 	name: '',
 	score: 0
@@ -98,7 +99,8 @@ function playerPick(playerPick) { // and computer also!
 function getComputerPick() {
 	return possiblePicks[Math.floor(Math.random() * 3)];
 }
-
+/*
+//Wersja wszytsko w jednym
 function checkRoundWinner(playerPick, computerPick) {
 	playerResultElem.innerHTML = computerResultElem.innerHTML = '';
 
@@ -118,11 +120,48 @@ function checkRoundWinner(playerPick, computerPick) {
 		playerResultElem.innerHTML = "Wygrana!";
 		player.score++;
 	}
-
+	setGamePoints(); // a aktualizacje zjadł pies ?, dodałem...
+	
+}
 //
-setGamePoints(); // a aktualizacje zjadł pies ?, dodałem...
+*/
+
+//Wersja w 2 funkcjach checkRoundWinner i setRoundWinnerResults
+function checkRoundWinner(playerPick, computerPick) {
+	playerResultElem.innerHTML = '';
+	computerResultElem.innerHTML = '';
+
+	roundWinnerIs = 'player'; // domyślny!
+
+	if (playerPick == computerPick) {
+		roundWinnerIs = 'noone'; // remis
+	} else if (
+		(computerPick == possiblePicks[0] && playerPick == possiblePicks[1]) ||
+		(computerPick == possiblePicks[1] && playerPick == possiblePicks[2]) ||
+		(computerPick == possiblePicks[2] && playerPick == possiblePicks[0])) {
+		roundWinnerIs = 'computer';
+	} 
+
+    setRoundWinnerResults(roundWinnerIs);
+	setGamePoints(roundWinnerIs); // a aktualizacje zjadł pies ?, dodałem...
 }
 
+function setRoundWinnerResults(winner) {
+	if (winner == 'noone') {
+		computerResultElem.innerHTML = "Remis";
+		playerResultElem.innerHTML = "Remis";
+	} else if (winner == 'computer')
+	{
+		computerResultElem.innerHTML = "Wygrana!";
+		computer.score++;
+	} else {
+		//winner == 'player'
+		playerResultElem.innerHTML = "Wygrana!";
+		player.score++;
+	}
+}
+	
+	
 function setGamePoints() {
 	playerPointsElem.innerHTML = player.score;
 	computerPointsElem.innerHTML = computer.score;
