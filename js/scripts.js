@@ -37,8 +37,8 @@ pickScissors.addEventListener('click', function () {
 // initiate
 var gameState = 'notStarted'; //started // ended
 var possiblePicks = ['kamień', 'papier', 'nożyce'];
-var winnerName = ""; //*
-var roundWinnerIs ="" ; //*
+var winnerName = ''; 
+var roundWinnerIs = ''; 
 var player = {
 	name: '',
 	score: 0
@@ -74,12 +74,12 @@ function setGameElements() {
 }
 
 function newGame() {
-	player.name = prompt('Graczu, wpisz swoje imię', 'imię gracza');
-	if (player.name) { // czy powyższy wiersz nie implikuje powstania tej zmiennej w kazdym wypadku ?
+	player.name = prompt('Graczu, wpisz swoje imię', 'Imię gracza');
+	if (player.name) {
 		player.score = 0;
 		computer.score = 0;
 		gameState = 'started';
-		winnerName = ''; //*
+		winnerName = ''; 
 		setGameElements();
 		playerNameElem.innerHTML = player.name;
 		setGamePoints();
@@ -99,73 +99,42 @@ function playerPick(playerPick) { // and computer also!
 function getComputerPick() {
 	return possiblePicks[Math.floor(Math.random() * 3)];
 }
-/*
-//Wersja wszytsko w jednym
+
+
 function checkRoundWinner(playerPick, computerPick) {
-	playerResultElem.innerHTML = computerResultElem.innerHTML = '';
-
-	var winnerIs = 'player'; // domyślny!
-
 	if (playerPick == computerPick) {
-		winnerIs = 'noone'; // remis
+		setRoundWinnerResults(null, null, true);
 	} else if (
 		(computerPick == possiblePicks[0] && playerPick == possiblePicks[1]) ||
 		(computerPick == possiblePicks[1] && playerPick == possiblePicks[2]) ||
 		(computerPick == possiblePicks[2] && playerPick == possiblePicks[0])) {
-		winnerIs = 'computer';
-
-		computerResultElem.innerHTML = "Wygrana!";
-		computer.score++;
+		setRoundWinnerResults(player, playerResultElem);
 	} else {
-		playerResultElem.innerHTML = "Wygrana!";
-		player.score++;
+		setRoundWinnerResults(computer, computerResultElem);
 	}
-	setGamePoints(); // a aktualizacje zjadł pies ?, dodałem...
-	
-}
-//
-*/
 
-//Wersja w 2 funkcjach checkRoundWinner i setRoundWinnerResults
-function checkRoundWinner(playerPick, computerPick) {
+	return setGamePoints(roundWinnerIs); 
+}
+
+
+function setRoundWinnerResults(winner, winnerResultContainer, remis) {
 	playerResultElem.innerHTML = '';
 	computerResultElem.innerHTML = '';
-
-	roundWinnerIs = 'player'; // domyślny!
-
-	if (playerPick == computerPick) {
-		roundWinnerIs = 'noone'; // remis
-	} else if (
-		(computerPick == possiblePicks[0] && playerPick == possiblePicks[1]) ||
-		(computerPick == possiblePicks[1] && playerPick == possiblePicks[2]) ||
-		(computerPick == possiblePicks[2] && playerPick == possiblePicks[0])) {
-		roundWinnerIs = 'computer';
-	} 
-
-    setRoundWinnerResults(roundWinnerIs);
-	setGamePoints(roundWinnerIs); // a aktualizacje zjadł pies ?, dodałem...
-}
-
-function setRoundWinnerResults(winner) {
-	if (winner == 'noone') {
+	if (remis === true){
 		computerResultElem.innerHTML = "Remis";
 		playerResultElem.innerHTML = "Remis";
-	} else if (winner == 'computer')
-	{
-		computerResultElem.innerHTML = "Wygrana!";
-		computer.score++;
 	} else {
-		//winner == 'player'
-		playerResultElem.innerHTML = "Wygrana!";
-		player.score++;
+		winnerResultContainer.innerHTML = "Wygrana!";
+		winner.score++;
 	}
 }
-	
-	
+
+
 function setGamePoints() {
 	playerPointsElem.innerHTML = player.score;
 	computerPointsElem.innerHTML = computer.score;
 }
+
 
 function checkGlobalWinner() {
 	if (player.score > 9) {
@@ -175,7 +144,7 @@ function checkGlobalWinner() {
 	if (computer.score > 9) {
 		winnerName = "computer";
 	}
-	
+
 	if (winnerName) {
 		gameState = 'ended';
 		setGameElements();
