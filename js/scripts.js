@@ -38,7 +38,7 @@ pickScissors.addEventListener('click', function () {
 var gameState = 'notStarted'; //started // ended
 var possiblePicks = ['kamień', 'papier', 'nożyce'];
 var winnerName = ''; 
-var roundWinnerIs = ''; 
+
 var player = {
 	name: '',
 	score: 0
@@ -113,7 +113,7 @@ function checkRoundWinner(playerPick, computerPick) {
 		setRoundWinnerResults(computer, computerResultElem);
 	}
 
-	return setGamePoints(roundWinnerIs); 
+	return setGamePoints(); 
 }
 
 
