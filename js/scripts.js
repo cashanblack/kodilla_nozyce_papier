@@ -103,7 +103,7 @@ function getComputerPick() {
 
 function checkRoundWinner(playerPick, computerPick) {
 	if (playerPick == computerPick) {
-		setRoundWinnerResults(null, null, true);
+		setRoundWinnerResults(computer, computerResultElem, player, playerResultElem);
 	} else if (
 		(computerPick == possiblePicks[0] && playerPick == possiblePicks[1]) ||
 		(computerPick == possiblePicks[1] && playerPick == possiblePicks[2]) ||
@@ -117,16 +117,20 @@ function checkRoundWinner(playerPick, computerPick) {
 }
 
 
-function setRoundWinnerResults(winner, winnerResultContainer, remis) {
-	playerResultElem.innerHTML = '';
-	computerResultElem.innerHTML = '';
-	if (remis === true){
-		computerResultElem.innerHTML = "Remis";
-		playerResultElem.innerHTML = "Remis";
+function setRoundWinnerResults(winner, winnerResultContainer, secondWinner, secondWinnerResultContainer) {
+	setResultContainersEmpty();
+	if (secondWinner){
+		winnerResultContainer.innerHTML = "Remis";
+		secondWinnerResultContainer.innerHTML = "Remis";
 	} else {
 		winnerResultContainer.innerHTML = "Wygrana!";
 		winner.score++;
 	}
+}
+
+function setResultContainersEmpty() {
+	playerResultElem.innerHTML = '';
+	computerResultElem.innerHTML = '';
 }
 
 
